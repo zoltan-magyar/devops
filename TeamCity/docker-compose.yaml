@@ -42,7 +42,7 @@ services:
 
  
   agent-sudo:
-    image: zoltmagyar/teamcity-agent:local-linux-arm64-sudo
+    image: ${SUDO_AGENT_IMAGE}
     networks:
       default:
         aliases:
