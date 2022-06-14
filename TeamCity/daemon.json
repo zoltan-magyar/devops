@@ -1,0 +1,3 @@
+{
+    "insecure-registries" : ["nexus-server:8001", "nexus-server:8002", "nexus-server:8003", "nexus-server:8004"]
+}

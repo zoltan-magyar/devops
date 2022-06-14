@@ -1,0 +1,117 @@
+version: '3'
+
+name: teamcity
+
+services:
+  server:
+    image: ${SERVER_IMAGE}
+    networks:
+      default:
+        aliases:
+          - teamcity-server
+    volumes:
+      - server-data:/data/teamcity_server/datadir
+      - server-logs:/opt/teamcity/logs
+      - server-temp:/opt/teamcity/temp
+    depends_on:
+      - database
+    ports:
+     - "8111:8111"
+ 
+  minimal-agent:
+    image: ${MINIMAL_AGENT_IMAGE}
+    networks:
+      default:
+        aliases:
+          - teamcity-minimal-agent
+    configs:
+      - source: docker-config
+        target: /etc/docker/daemon.json
+    volumes:
+      - minimal-agent-config:/data/teamcity_agent/conf
+      - minimal-agent-work:/opt/buildagent/work
+      - minimal-agent-system:/opt/buildagent/system
+      - minimal-agent-temp:/opt/buildagent/temp
+      - minimal-agent-logs:/opt/buildagent/logs
+      - minimal-agent-tools:/opt/buildagent/tools
+      - minimal-agent-plugins:/opt/buildagent/plugins
+    environment:
+      - SERVER_URL=teamcity-server:8111
+    depends_on:
+      - server
+
+ 
+  agent-sudo:
+    image: zoltmagyar/teamcity-agent:local-linux-arm64-sudo
+    networks:
+      default:
+        aliases:
+          - teamcity-agent-sudo
+    privileged: true
+    configs:
+      - source: docker-config
+        target: /etc/docker/daemon.json
+    volumes:
+      - agent-sudo-config:/data/teamcity_agent/conf
+      - agent-sudo-work:/opt/buildagent/work
+      - agent-sudo-system:/opt/buildagent/system
+      - agent-sudo-temp:/opt/buildagent/temp
+      - agent-sudo-logs:/opt/buildagent/logs
+      - agent-sudo-tools:/opt/buildagent/tools
+      - agent-sudo-plugins:/opt/buildagent/plugins
+      - agent-sudo-docker:/var/lib/docker
+    environment:
+      - SERVER_URL=teamcity-server:8111
+      - DOCKER_IN_DOCKER=start
+    depends_on:
+      - server
+    
+  database:
+    image: mysql:8-oracle
+    command: 
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_bin"
+    networks:
+      default:
+        aliases:
+          - teamcity-database
+    volumes:
+      - database:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=TeamCity
+      - MYSQL_USER=teamcity
+      - MYSQL_PASSWORD=teamcity
+    ports:
+      - "3306:3306"
+
+configs:
+  docker-config:
+    file: ./daemon.json
+
+networks:
+  default:
+    name: ${DOCKER_NETWORK:?err}
+    external: true
+
+volumes:
+  server-data: {}
+  server-logs: {}
+  server-temp: {}
+  minimal-agent-config: {}
+  minimal-agent-work: {}
+  minimal-agent-system: {}
+  minimal-agent-temp: {}
+  minimal-agent-logs: {}
+  minimal-agent-tools: {}
+  minimal-agent-plugins: {}
+  agent-sudo-config: {}
+  agent-sudo-work: {}
+  agent-sudo-system: {}
+  agent-sudo-temp: {}
+  agent-sudo-logs: {}
+  agent-sudo-tools: {}
+  agent-sudo-plugins: {}
+  agent-sudo-docker: {}
+  database: {}
+  

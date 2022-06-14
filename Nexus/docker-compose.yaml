@@ -1,0 +1,27 @@
+version: "3"
+
+name: nexus
+
+services:
+  server:
+    image: zoltmagyar/nexus:3
+    networks:
+          default:
+            aliases:
+              - nexus-server
+    volumes:
+      - "nexus-data:/nexus-data"
+    ports:
+      - "8001:8001"
+      - "8002:8002" # Docker Snapshots
+      - "8003:8003" # Docker Releases
+      - "8004:8004" # DockerHub proxy
+      - "8081:8081" # Docker Group
+
+networks:
+  default:
+    name: ${DOCKER_NETWORK:?err}
+    external: true
+
+volumes:
+  nexus-data: {}

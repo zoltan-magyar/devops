@@ -1,0 +1,53 @@
+version: "3"
+
+name: sonarqube
+
+services:
+  server:
+    image: zoltmagyar/sonarqube:9
+    networks:
+      default:
+        aliases:
+          - sonarqube-server
+    depends_on:
+      - database
+    ports:
+      - "9000:9000"
+      - "9080:80"
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://sonarqube-database:5432/sonar
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+    volumes:
+      - data:/opt/sonarqube/data
+      - extensions:/opt/sonarqube/extensions
+      - logs:/opt/sonarqube/logs
+      - temp:/opt/sonarqube/temp
+
+  database:
+    image: postgres:13
+    networks:
+      default:
+        aliases:
+          - sonarqube-database
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar
+    ports:
+      - 5432:5432
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+
+networks:
+  default:
+    name: ${DOCKER_NETWORK:?err}
+    external: true
+
+volumes:
+  data:
+  extensions:
+  logs:
+  temp:
+  postgresql:
+  postgresql_data:

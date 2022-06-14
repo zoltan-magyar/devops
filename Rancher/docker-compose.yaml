@@ -1,0 +1,31 @@
+version: '3'
+
+name: rancher
+
+services:
+  server:
+    image: zoltmagyar/rancher:v2.6.4-cgv2
+    privileged: true
+    networks:
+      default:
+        aliases:
+          - rancher-server
+    volumes:
+      - data:/var/lib/rancher
+      - kubelet:/var/lib/kubelet
+      - cni:/var/lib/cni
+      - logs:/var/log
+    ports:
+     - "8443:443"
+     - "8080:80"
+
+networks:
+  default:
+    name: ${DOCKER_NETWORK:?err}
+    external: true
+
+volumes:
+  data: {}
+  kubelet: {}
+  cni: {}
+  logs: {}
