@@ -1,0 +1,25 @@
+version: '3.1'
+
+name: arangodb
+
+services:
+  database:
+      image: arangodb/arangodb-preview:3.10-nightly
+      ports:
+        - 8529:8529
+      environment:
+        ARANGO_ROOT_PASSWORD: password
+      volumes:
+        - data:/var/lib/arangodb3
+      networks:
+        default:
+          aliases:
+            - arangodb-database
+    
+networks:
+  default:
+    name: ${DOCKER_NETWORK:?err}
+    external: true
+
+volumes:
+  data: {}
