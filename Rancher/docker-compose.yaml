@@ -15,9 +15,9 @@ services:
       - kubelet:/var/lib/kubelet
       - cni:/var/lib/cni
       - logs:/var/log
-      - .certificates/rancher-bundle.pem:/etc/rancher/ssl/cert.pem
-      - .certificates/rancher-key.pem:/etc/rancher/ssl/key.pem
-      - .certificates/root-ca.pem:/etc/rancher/ssl/cacerts.pem
+      - ./certificates/rancher-bundle.pem:/etc/rancher/ssl/cert.pem
+      - ./certificates/rancher-key.pem:/etc/rancher/ssl/key.pem
+      - ./certificates/root-ca.pem:/etc/rancher/ssl/cacerts.pem
     ports:
      - "443:443"
      - "80:80"
