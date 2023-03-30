@@ -1,0 +1,67 @@
+apiVersion: management.cattle.io/v3
+builtin: false
+description: Used to view and access Continuous Delivery in Rancher.
+displayName: FleetDeveloper
+kind: GlobalRole
+newUserDefault: false
+metadata:
+  generateName: gr-
+rules:
+- apiGroups:
+  - fleet.cattle.io
+  resources:
+  - bundles
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - fleet.cattle.io
+  nonResourceURLs: []
+  resourceNames: []
+  resources:
+  - bundledeployments
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - fleet.cattle.io
+  nonResourceURLs: []
+  resourceNames: []
+  resources:
+  - clusters
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - fleet.cattle.io
+  nonResourceURLs: []
+  resourceNames: []
+  resources:
+  - gitrepos
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - management.cattle.io
+  nonResourceURLs: []
+  resourceNames: []
+  resources:
+  - fleetworkspaces
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - fleet.cattle.io
+  nonResourceURLs: []
+  resourceNames: []
+  resources:
+  - clustergroups
+  verbs:
+  - get
+  - list
+  - watch

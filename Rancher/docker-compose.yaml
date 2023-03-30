@@ -9,15 +9,18 @@ services:
     networks:
       default:
         aliases:
-          - rancher-server
+          - rancher.home
     volumes:
       - data:/var/lib/rancher
       - kubelet:/var/lib/kubelet
       - cni:/var/lib/cni
       - logs:/var/log
+      - .certificates/rancher-bundle.pem:/etc/rancher/ssl/cert.pem
+      - .certificates/rancher-key.pem:/etc/rancher/ssl/key.pem
+      - .certificates/root-ca.pem:/etc/rancher/ssl/cacerts.pem
     ports:
-     - "8443:443"
-     - "8080:80"
+     - "443:443"
+     - "80:80"
 
 networks:
   default:
