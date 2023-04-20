@@ -9,14 +9,14 @@ services:
     networks:
       default:
         aliases:
-          - rancher.windows.home
+          - rancher.${SUBDOMAIN:?err}
     volumes:
       - data:/var/lib/rancher
       - kubelet:/var/lib/kubelet
       - cni:/var/lib/cni
       - logs:/var/log
-      - ./certificates/windows-rancher-bundle.pem:/etc/rancher/ssl/cert.pem
-      - ./certificates/windows-rancher-dec-trad-key.pem:/etc/rancher/ssl/key.pem
+      - ./certificates/rancher-bundle.pem:/etc/rancher/ssl/cert.pem
+      - ./certificates/rancher-dec-trad-key.pem:/etc/rancher/ssl/key.pem
       - ./certificates/root-ca.pem:/etc/rancher/ssl/cacerts.pem
 
   proxy:
@@ -24,7 +24,7 @@ services:
     networks:
       default:
         aliases:
-          - proxy.home
+          - proxy.${SUBDOMAIN:?err}
     ports:
      - "443:443"
      - "80:80"
