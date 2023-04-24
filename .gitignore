@@ -1,3 +1,6 @@
+# Certificates
+/Rancher/certificates/**
+
 # Certificate keys
 *-key.pem
 *-key.crt

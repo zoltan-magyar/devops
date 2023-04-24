@@ -1,7 +1,7 @@
 apiVersion: management.cattle.io/v3
 builtin: false
 description: Used to view and access Continuous Delivery in Rancher.
-displayName: FleetDeveloper
+displayName: Fleet Developer
 kind: GlobalRole
 newUserDefault: false
 metadata:
