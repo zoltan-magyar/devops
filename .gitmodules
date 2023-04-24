@@ -1,9 +1,0 @@
-[submodule "TeamCity/teamcity-docker-images"]
-	path = TeamCity/teamcity-docker-images
-	url = git@github.com:zoltan-magyar/teamcity-docker-images.git
-[submodule "Nexus/docker-nexus3"]
-	path = Nexus/docker-nexus3
-	url = git@github.com:sonatype/docker-nexus3.git
-[submodule "SonarQube/docker-sonarqube"]
-	path = SonarQube/docker-sonarqube
-	url = git@github.com:SonarSource/docker-sonarqube.git
