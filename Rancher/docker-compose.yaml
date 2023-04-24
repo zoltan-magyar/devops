@@ -17,7 +17,7 @@ services:
       - logs:/var/log
       - ./certificates/rancher-bundle.pem:/etc/rancher/ssl/cert.pem
       - ./certificates/rancher-dec-trad-key.pem:/etc/rancher/ssl/key.pem
-      - ./certificates/root-ca.pem:/etc/rancher/ssl/cacerts.pem
+      - ./certificates/rancher-ca.pem:/etc/rancher/ssl/cacerts.pem
 
   proxy:
     image: haproxy:2.7.6
