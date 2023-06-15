@@ -19,6 +19,29 @@ services:
       - ./certificates/rancher-dec-trad-key.pem:/etc/rancher/ssl/key.pem
       - ./certificates/rancher-ca.pem:/etc/rancher/ssl/cacerts.pem
 
+  keycloak:
+    image: bitnami/keycloak:latest
+    environment:
+      KEYCLOAK_DATABASE_HOST: postgres.${SUBDOMAIN:?err}
+      KEYCLOAK_DATABASE_NAME: keycloak
+      KEYCLOAK_DATABASE_USER: keycloak
+      KEYCLOAK_DATABASE_PASSWORD: keycloak
+    networks:
+      default:
+        aliases:
+          - keycloak.${SUBDOMAIN:?err}
+
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: keycloak
+      POSTGRES_USER: keycloak
+    networks:
+      default:
+        aliases:
+          - postgres.${SUBDOMAIN:?err}
+
   proxy:
     image: haproxy:2.7.6
     networks:
