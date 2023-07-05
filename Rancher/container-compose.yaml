@@ -27,8 +27,6 @@ services:
       KEYCLOAK_DATABASE_NAME: keycloak
       KEYCLOAK_DATABASE_USER: keycloak
       KEYCLOAK_DATABASE_PASSWORD: keycloak
-      KEYCLOAK_ADMIN_USER: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
       KEYCLOAK_HTTP_PORT: 8080
     networks:
       default:
@@ -41,8 +39,6 @@ services:
     environment:
       POSTGRES_PASSWORD: keycloak
       POSTGRES_USER: keycloak
-      POSEGRES_ROOT_PASSWORD: admin
-      POSGRES_ROOT_USER: admin
     networks:
       default:
         aliases:
@@ -64,19 +60,6 @@ services:
     volumes:
       - ./config/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
 
-  openldap:
-    image: docker.io/bitnami/openldap:2.6
-    ports:
-      - '1389:1389'
-      - '1636:1636'
-    environment:
-      - LDAP_ADMIN_USERNAME=admin
-      - LDAP_ADMIN_PASSWORD=password
-      - LDAP_USERS=keycloak
-      - LDAP_PASSWORDS=keycloak
-    volumes:
-      - 'openldap_data:/bitnami/openldap'
-
 networks:
   default:
     name: ${DOCKER_NETWORK:?err}
@@ -87,4 +70,3 @@ volumes:
   kubelet: {}
   cni: {}
   logs: {}
-  openldap_data: {}
