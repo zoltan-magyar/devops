@@ -4,7 +4,7 @@ name: downstream
 
 nodes:
 - role: control-plane
-  image: kindest/node:v1.25.8@sha256:00d3f5314cc35327706776e95b2f8e504198ce59ac545d0200a89e69fce10b7f
+  image: kindest/node:v1.25.11@sha256:227fa11ce74ea76a0474eeefb84cb75d8dad1b08638371ecf0e86259b35be0c8
   # kubeadmConfigPatches:
   # - |
   #   kind: InitConfiguration
@@ -12,4 +12,4 @@ nodes:
   #     kubeletExtraArgs:
   #       node-labels: "ingress-ready=true"
 - role: worker
-  image: kindest/node:v1.25.8@sha256:00d3f5314cc35327706776e95b2f8e504198ce59ac545d0200a89e69fce10b7f
+  image: kindest/node:v1.25.11@sha256:227fa11ce74ea76a0474eeefb84cb75d8dad1b08638371ecf0e86259b35be0c8

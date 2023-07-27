@@ -1,0 +1,39 @@
+version: '3'
+
+name: rancher
+
+services:
+  keycloak:
+      image: bitnami/keycloak:latest
+      privileged: true
+      user: root
+      environment:
+        KEYCLOAK_DATABASE_HOST: postgres.${SUBDOMAIN:?err}
+        KEYCLOAK_DATABASE_NAME: keycloak
+        KEYCLOAK_DATABASE_USER: keycloak
+        KEYCLOAK_DATABASE_PASSWORD: keycloak
+        KEYCLOAK_ADMIN_USER: admin
+        KEYCLOAK_ADMIN_PASSWORD: admin
+        KEYCLOAK_HTTP_PORT: 80
+      networks:
+        default:
+          aliases:
+            - keycloak.${SUBDOMAIN:?err}
+
+  database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: keycloak
+      POSTGRES_USER: keycloak
+      POSEGRES_ROOT_PASSWORD: admin
+      POSGRES_ROOT_USER: admin
+    networks:
+      default:
+        aliases:
+          - postgres-database.${SUBDOMAIN:?err}
+
+networks:
+  default:
+    name: ${DOCKER_NETWORK:?err}
+    external: true

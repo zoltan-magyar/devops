@@ -1,0 +1,25 @@
+version: '3'
+
+name: proxy
+
+services:
+  proxy:
+      image: haproxy:2.8
+      privileged: true
+      user: root
+      networks:
+        default:
+          aliases:
+            - proxy.${SUBDOMAIN:?err}
+      ports:
+      - "443:443"
+      - "80:80"
+      - "8080:8080"
+      - "8443:8443"
+      volumes:
+        - ./config/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+
+networks:
+  default:
+    name: ${DOCKER_NETWORK:?err}
+    external: true

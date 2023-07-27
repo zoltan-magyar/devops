@@ -1,0 +1,44 @@
+version: '3'
+
+name: openldap
+
+services:
+  openldap:
+    image: bitnami/openldap:2.6
+    ports:
+      - '389:389'
+      - '636:636'
+    environment:
+      LDAP_ADMIN_USERNAME: admin
+      LDAP_ADMIN_PASSWORD: admin
+      LDAP_USERS: user
+      LDAP_PASSWORDS: password
+      LDAP_ROOT: dc=ldap,dc=laptop,dc=home
+      LDAP_PORT_NUMBER: 389
+      LDAP_LDAPS_PORT_NUMBER: 636
+    volumes:
+      - 'openldap_data:/bitnami/openldap'
+    networks:
+      default:
+        aliases:
+          - ldap.${SUBDOMAIN:?err}
+
+  lam:
+    image: ghcr.io/ldapaccountmanager/lam:stable
+    environment:
+      VIRTUAL_HOST: lam.laptop.home
+      LDAP_DOMAIN: ldap.laptop.home
+      VIRTUAL_PORT: 80
+      LDAP_SERVER: ldap://ldap.laptop.home/
+    networks:
+      default:
+        aliases:
+          - lam.${SUBDOMAIN:?err}
+
+networks:
+  default:
+    name: ${DOCKER_NETWORK:?err}
+    external: true
+
+volumes:
+  openldap_data: {}

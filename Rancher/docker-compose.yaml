@@ -4,7 +4,7 @@ name: rancher
 
 services:
   server:
-    image: ${IMAGE:?err}
+    image: rancher/rancher:v2.7.5
     privileged: true
     user: root
     networks:
@@ -20,63 +20,6 @@ services:
       - ./certificates/rancher-dec-key.pem:/etc/rancher/ssl/key.pem
       - ./certificates/rancher-ca.pem:/etc/rancher/ssl/cacerts.pem
 
-  keycloak:
-    image: bitnami/keycloak:latest
-    environment:
-      KEYCLOAK_DATABASE_HOST: postgres.${SUBDOMAIN:?err}
-      KEYCLOAK_DATABASE_NAME: keycloak
-      KEYCLOAK_DATABASE_USER: keycloak
-      KEYCLOAK_DATABASE_PASSWORD: keycloak
-      KEYCLOAK_ADMIN_USER: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-      KEYCLOAK_HTTP_PORT: 8080
-    networks:
-      default:
-        aliases:
-          - keycloak.${SUBDOMAIN:?err}
-
-  postgres:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: keycloak
-      POSTGRES_USER: keycloak
-      POSEGRES_ROOT_PASSWORD: admin
-      POSGRES_ROOT_USER: admin
-    networks:
-      default:
-        aliases:
-          - postgres.${SUBDOMAIN:?err}
-
-  proxy:
-    image: haproxy:2.8
-    privileged: true
-    user: root
-    networks:
-      default:
-        aliases:
-          - proxy.${SUBDOMAIN:?err}
-    ports:
-     - "443:443"
-     - "80:80"
-     - "8080:8080"
-     - "8443:8443"
-    volumes:
-      - ./config/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
-
-  openldap:
-    image: docker.io/bitnami/openldap:2.6
-    ports:
-      - '1389:1389'
-      - '1636:1636'
-    environment:
-      - LDAP_ADMIN_USERNAME=admin
-      - LDAP_ADMIN_PASSWORD=password
-      - LDAP_USERS=keycloak
-      - LDAP_PASSWORDS=keycloak
-    volumes:
-      - 'openldap_data:/bitnami/openldap'
-
 networks:
   default:
     name: ${DOCKER_NETWORK:?err}
@@ -87,4 +30,3 @@ volumes:
   kubelet: {}
   cni: {}
   logs: {}
-  openldap_data: {}
