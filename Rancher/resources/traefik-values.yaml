@@ -4,10 +4,12 @@ affinity: {}
 autoscaling:
   enabled: false
 certResolvers: {}
+commonLabels: {}
 deployment:
   additionalContainers: []
   additionalVolumes: []
   annotations: {}
+  dnsConfig: {}
   enabled: true
   imagePullSecrets: []
   initContainers: []
@@ -20,16 +22,20 @@ deployment:
   replicas: 1
   shareProcessNamespace: false
   terminationGracePeriodSeconds: 60
-env: []
+env:
+  - name: POD_NAME
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.name
+  - name: POD_NAMESPACE
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.namespace
 envFrom: []
 experimental:
   kubernetesGateway:
     enabled: false
-    gateway:
-      enabled: true
   plugins:
-    enabled: false
-  v3:
     enabled: false
 extraObjects:
   - apiVersion: traefik.containo.us/v1alpha1
@@ -43,8 +49,6 @@ globalArguments:
   - '--global.checknewversion'
   - '--global.sendanonymoususage'
 hostNetwork: false
-hub:
-  enabled: false
 image:
   pullPolicy: IfNotPresent
   registry: docker.io
@@ -58,11 +62,20 @@ ingressRoute:
     annotations: {}
     enabled: true
     entryPoints:
-      - websecure
+      - web
     labels: {}
-    matchRule: Host(`traefik.home`)
+    matchRule: Host(`traefik.pc.home`)
     middlewares:
       - name: traefik-dashboard-auth
+    tls: {}
+  healthcheck:
+    annotations: {}
+    enabled: false
+    entryPoints:
+      - traefik
+    labels: {}
+    matchRule: PathPrefix(`/ping`)
+    middlewares: []
     tls: {}
 livenessProbe:
   failureThreshold: 3
@@ -72,7 +85,7 @@ livenessProbe:
   timeoutSeconds: 2
 logs:
   access:
-    enabled: true
+    enabled: false
     fields:
       general:
         defaultmode: keep
@@ -82,7 +95,7 @@ logs:
         names: {}
     filters: {}
   general:
-    level: DEBUG
+    level: ERROR
 metrics:
   prometheus:
     entryPoint: metrics
@@ -158,6 +171,7 @@ readinessProbe:
   timeoutSeconds: 2
 resources: {}
 securityContext:
+  allowPrivilegeEscalation: false
   capabilities:
     drop:
       - ALL
