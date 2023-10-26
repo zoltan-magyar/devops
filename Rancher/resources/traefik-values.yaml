@@ -1,4 +1,5 @@
-additionalArguments: []
+additionalArguments:
+  - "--serversTransport.insecureSkipVerify=true"
 additionalVolumeMounts: []
 affinity: {}
 autoscaling:
@@ -95,7 +96,7 @@ logs:
         names: {}
     filters: {}
   general:
-    level: ERROR
+    level: DEBUG
 metrics:
   prometheus:
     entryPoint: metrics

@@ -1,0 +1,59 @@
+dataKey: "somethingsecret"
+account:
+  create: false
+  name: default
+affinity: {}
+authenticators: authn
+conjurLabels: {}
+database:
+  password: ''
+  ssl:
+    expiration: 365
+  url: ''
+deployment:
+  annotations: {}
+image:
+  pullPolicy: Always
+  repository: cyberark/conjur
+  tag: latest
+logLevel: info
+nginx:
+  image:
+    pullPolicy: Always
+    repository: nginx
+    tag: '1.15'
+nodeSelector: {}
+openshift:
+  enabled: false
+postgres:
+  image:
+    pullPolicy: Always
+    repository: postgres
+    tag: '15.4'
+  persistentVolume:
+    create: true
+    size: 8Gi
+postgresLabels: {}
+rbac:
+  create: true
+replicaCount: 1
+resources: {}
+service:
+  external:
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
+    enabled: false
+    port: 443
+  internal:
+    annotations: {}
+    port: 443
+    type: NodePort
+serviceAccount:
+  create: true
+ssl:
+  altNames: []
+  expiration: 365
+  hostname: conjur.pc.home
+test:
+  deleteOnSuccess: true
+tolerations: []
